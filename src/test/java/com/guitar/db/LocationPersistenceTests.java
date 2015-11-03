@@ -52,8 +52,15 @@ public class LocationPersistenceTests {
 	@Test
 	public void testJpaNot(){
 		List<Location> locations = locationJpaRository.findByStateNot("Utah");
-		assertNotSame("Utah", locations.get(0).getState());
+		assertNotSame("Ohio", locations.get(0).getState());
 	}
+	
+	@Test
+	public void testJpaIsEqual(){
+		List<Location> locations = locationJpaRository.findByStateIsOrCountryEquals("Utah", "Utah");
+		assertEquals("Utah", locations.get(0).getState());
+	}
+	
 
 	@Test
 	@Transactional
@@ -79,6 +86,12 @@ public class LocationPersistenceTests {
 	@Test
 	public void testFindWithLike() throws Exception {
 		List<Location> locs = locationJpaRository.findByStateLike("New%");
+		assertEquals(4, locs.size());
+	}
+	
+	@Test
+	public void testFindStartingWith() throws Exception {
+		List<Location> locs = locationJpaRository.findByStateStartingWith("New");
 		assertEquals(4, locs.size());
 	}
 

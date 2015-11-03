@@ -17,6 +17,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.guitar.db.model.Model;
+import com.guitar.db.repository.ModelJpaRepository;
 import com.guitar.db.repository.ModelRepository;
 
 @ContextConfiguration(locations={"classpath:com/guitar/db/applicationTests-context.xml"})
@@ -24,6 +25,9 @@ import com.guitar.db.repository.ModelRepository;
 public class ModelPersistenceTests {
 	@Autowired
 	private ModelRepository modelRepository;
+	
+	@Autowired
+	private ModelJpaRepository modelJpaRepository;
 
 	@PersistenceContext
 	private EntityManager entityManager;
@@ -56,6 +60,12 @@ public class ModelPersistenceTests {
 		List<Model> mods = modelRepository.getModelsInPriceRange(BigDecimal.valueOf(1000L), BigDecimal.valueOf(2000L));
 		assertEquals(4, mods.size());
 	}
+	
+	@Test
+	public void testGetModelsInPriceRangeJpa() throws Exception {
+		List<Model> mods = modelJpaRepository.findByPriceGreaterThanEqualAndPriceLessThanEqual(BigDecimal.valueOf(1000L), BigDecimal.valueOf(2000L));
+		assertEquals(4, mods.size());
+	}
 
 	@Test
 	public void testGetModelsByPriceRangeAndWoodType() throws Exception {
@@ -68,4 +78,6 @@ public class ModelPersistenceTests {
 		List<Model> mods = modelRepository.getModelsByType("Electric");
 		assertEquals(4, mods.size());
 	}
+	
+	
 }

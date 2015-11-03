@@ -17,5 +17,7 @@ public interface ModelJpaRepository extends JpaRepository<Model, Long> {
 	List<Model> queryByPriceRangeAndWoodType(
 			@Param("lowest") BigDecimal lowest,
 			@Param("highest") BigDecimal high, @Param("wood") String wood);
+	
+	List<Model> findByPriceGreaterThanEqualAndPriceLessThanEqual(BigDecimal low, BigDecimal high);
 
 }
